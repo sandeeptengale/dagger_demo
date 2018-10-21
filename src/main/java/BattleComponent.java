@@ -1,8 +1,8 @@
 import dagger.Component;
 
-@Component
+@Component(modules = BravoModule.class)
 public interface BattleComponent {
     War getWar();
-    Starks getStarks();
-    Bolts getBolts();
+    Cash getCash();
+    Solider getSolider();
 }

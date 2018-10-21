@@ -1,3 +1,4 @@
+import dagger.internal.Preconditions;
 import javax.annotation.Generated;
 
 @Generated(
@@ -5,14 +6,19 @@ import javax.annotation.Generated;
   comments = "https://google.github.io/dagger"
 )
 public final class DaggerBattleComponent implements BattleComponent {
-  private DaggerBattleComponent(Builder builder) {}
+  private BravoModule bravoModule;
+
+  private DaggerBattleComponent(Builder builder) {
+    initialize(builder);
+  }
 
   public static Builder builder() {
     return new Builder();
   }
 
-  public static BattleComponent create() {
-    return new Builder().build();
+  @SuppressWarnings("unchecked")
+  private void initialize(final Builder builder) {
+    this.bravoModule = builder.bravoModule;
   }
 
   @Override
@@ -21,20 +27,30 @@ public final class DaggerBattleComponent implements BattleComponent {
   }
 
   @Override
-  public Starks getStarks() {
-    return new Starks();
+  public Cash getCash() {
+    return BravoModule_GetCashFactory.proxyGetCash(bravoModule);
   }
 
   @Override
-  public Bolts getBolts() {
-    return new Bolts();
+  public Solider getSolider() {
+    return BravoModule_GetSoliderFactory.proxyGetSolider(bravoModule);
   }
 
   public static final class Builder {
+    private BravoModule bravoModule;
+
     private Builder() {}
 
     public BattleComponent build() {
+      if (bravoModule == null) {
+        throw new IllegalStateException(BravoModule.class.getCanonicalName() + " must be set");
+      }
       return new DaggerBattleComponent(this);
+    }
+
+    public Builder bravoModule(BravoModule bravoModule) {
+      this.bravoModule = Preconditions.checkNotNull(bravoModule);
+      return this;
     }
   }
 }
